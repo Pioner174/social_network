@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-
+from social_core.backends.facebook import FacebookOAuth2
 
 class EmailAuthBackend(object):
     """Выполняет аутентификацию пользователя по e-mail"""
