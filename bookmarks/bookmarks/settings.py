@@ -155,8 +155,16 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-SOCIAL_AUTH_FACEBOOK_KEY = '487169105287224'
+SOCIAL_AUTH_FACEBOOK_KEY = '' # Facebook App ID
 
-SOCIAL_AUTH_FACEBOOK_SECRET = '07763a72ccfbeb82c352b6ad625ab9d2'
+SOCIAL_AUTH_FACEBOOK_SECRET = '' # Facebook App Secret
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+SOCIAL_AUTH_TWITTER_KEY = '' # Twitter Consumer Key
+
+SOCIAL_AUTH_TWITTER_SECRET = '' # Twitter Consumer Secret
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '' # Google Consumer Key
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '' # Google Consumer Secret
