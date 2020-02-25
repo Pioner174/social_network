@@ -146,7 +146,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 
 EMAIL_HOST_USER = 'orangecat3324@gmail.com'
 
-EMAIL_HOST_PASSWORD = 'CATSPARCO3324'
+EMAIL_HOST_PASSWORD = ''
 
 EMAIL_PORT = 587
 
