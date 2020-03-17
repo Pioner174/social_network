@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from django.urls import reverse
 
 
 class Image(models.Model):
@@ -32,3 +33,6 @@ class Image(models.Model):
             errors = {NON_FIELD_ERRORS: ValidationError(
                 'Должно быть заполнено хотябы одно поле url или image')}
             raise ValidationError(errors)
+
+    def get_absolute_url(self):
+        return reverse('images:detail', args=[self.id, self.slug])
