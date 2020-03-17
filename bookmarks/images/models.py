@@ -5,6 +5,7 @@ from django.urls import reverse
 
 
 class Image(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              related_name='images_created',
                              on_delete=models.CASCADE)
@@ -13,6 +14,7 @@ class Image(models.Model):
     image = models.ImageField(upload_to='images/%Y/%m/%d')
     description = models.TextField(blank=True)
     shooting = models.DateField(db_index=True, verbose_name='Shooting date')
+    private = models.BooleanField(default=False, verbose_name='Видна всем')
     created = models.DateField(auto_now_add=True, db_index=True)
     user_like = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                        related_name='images_liked',
@@ -26,3 +28,5 @@ class Image(models.Model):
             self.slug = slugify(self.title)
         super(Image, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('images:image', args=[self.id, self.slug])

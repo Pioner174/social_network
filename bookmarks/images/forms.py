@@ -8,6 +8,7 @@ from django.utils.text import slugify
 class ImageCreateForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = ('title', 'image', 'description', 'shooting')
-        widgets = {'shooting': forms.DateInput,}
+        fields = ('title', 'image', 'description', 'shooting', 'private')
+        widgets = {'private': forms.CheckboxInput,
+                   'shooting': forms.DateInput}
 
