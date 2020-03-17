@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
-from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.urls import reverse
 
 
@@ -11,8 +10,7 @@ class Image(models.Model):
                              on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, blank=True)
-    url = models.URLField(blank=True)
-    image = models.ImageField(upload_to='images/%Y/%m/%d', blank=True)
+    image = models.ImageField(upload_to='images/%Y/%m/%d')
     description = models.TextField(blank=True)
     shooting = models.DateField(db_index=True, verbose_name='Shooting date')
     created = models.DateField(auto_now_add=True, db_index=True)
@@ -28,11 +26,3 @@ class Image(models.Model):
             self.slug = slugify(self.title)
         super(Image, self).save(*args, **kwargs)
 
-    def clean(self):
-        if not self.url and not self.image:
-            errors = {NON_FIELD_ERRORS: ValidationError(
-                'Должно быть заполнено хотябы одно поле url или image')}
-            raise ValidationError(errors)
-
-    def get_absolute_url(self):
-        return reverse('images:detail', args=[self.id, self.slug])
