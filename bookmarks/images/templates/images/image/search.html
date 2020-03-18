@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+    {% if query %}
+        <h1>Image containing "{{ query }}"</h1>
+        <h3>
+            {% with images.count as total_results %}
+                Found {{ total_results }} result {{ total_results|pluralize }}
+            {% endwith %}
+        </h3>
+        <div id="image-list">
+            {% load thumbnail %}
+            {% for image in images %}
+                <div class="image">
+                    <a href="{{ image.get_absolute_url }}">
+                        {% thumbnail image.image "300x300" crop="100%" as im %}
+                            <a href="{{ image.get_absolute_url }}">
+                                <img src="{{ im.url }}">
+                            </a>
+                        {% endthumbnail %}
+                    </a>
+                    <div class="info">
+                        <a href="{{ image.get_absolute_url }}", class="title">{{ image.title }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1>Search for posts</h1>
+        <form action="." method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <input type="submit" value="Search">
+        </form>
+    {% endif %}
+{% endblock %}

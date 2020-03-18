@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'social_django',
     'images.apps.ImagesConfig',
     'sorl.thumbnail',
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [

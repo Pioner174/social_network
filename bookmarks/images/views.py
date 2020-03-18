@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import ImageCreateForm
-from django.http import HttpResponse
+from .forms import ImageCreateForm, SearchForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.contrib.postgres.search import SearchVector, SearchQuery,\
+    SearchRank
+from django.db.models import F
 from .models import Image
+
 
 @login_required
 def image_create(request):
@@ -51,3 +53,20 @@ def image_detail(request, id, slug):
     return render(request, 'images/image/image.html',
                   {'section': 'images', 'image': image})
 
+
+def image_search(request):
+    query = None
+    results = []
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Image.objects.annotate(
+                search=SearchVector('title', 'description', 'shooting')
+            ).filter(search=query, private=True)
+            return render(request, 'images/image/search.html',
+                          {'form': form, 'query': query, 'images': results})
+    else:
+        form = SearchForm()
+    return render(request, 'images/image/search.html',
+                  {'form': form,  'query': query, 'image': results})

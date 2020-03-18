@@ -8,16 +8,19 @@
 <body>
     <div id="header">
         <span class="logo">Bookmarks</span>
+        <ul class="menu">
+            <li {% if section == "images:list" %} class="seleted"{% endif %}>
+                <a href="{% url 'images:list' %}">Images</a>
+            <li {% if section == "images:search" %} class="seleted"{% endif %}>
+                <a href="{% url 'images:search' %}">Search image</a>
+        </ul>
         {% if request.user.is_authenticated %}
         <ul class="menu">
+            <li {% if section == "images:create" %} class="seleted"{% endif %}>
+                <a href="{% url 'images:create' %}">Create image</a>
             <li {% if section == "dashboard" %} class="seleted"{% endif %}>
-                <a href="{% url 'dashboard' %}">MY dashboard</a>
+                <a href="{% url 'dashboard' %}">My profile</a>
             </li>
-            <li {% if section == "images" %} class="seleted"{% endif %}>
-                <a href="{% url 'images:list' %}">Images</a>
-            </li>
-            <li {% if section == "people" %} class="seleted"{% endif %}>
-                <a href="#">People</a>
             </li>
         </ul>
         {% endif %}
