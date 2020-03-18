@@ -5,7 +5,7 @@ from .forms import ImageCreateForm, SearchForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.postgres.search import SearchVector, SearchQuery,\
     SearchRank
-from django.db.models import F
+from django.db.models import F, Q
 from .models import Image
 
 
@@ -33,7 +33,8 @@ def image_create(request):
 
 def image_list(request):
     if request.user.is_authenticated:
-        images = Image.objects.filter(user_id=request.user.id)
+        images = Image.objects.all().filter(
+            Q(user_id=request.user.id) | Q(private=True))
     else:
         images = Image.objects.filter(private=True)
     paginator = Paginator(images, 8)
@@ -50,6 +51,11 @@ def image_list(request):
 
 def image_detail(request, id, slug):
     image = get_object_or_404(Image, id=id, slug=slug)
+    if request.user.id == image.user_id:
+        if request.method == 'POST':
+            image.delete()
+            messages.success(request, 'Image delete successfully')
+            return image_list(request)
     return render(request, 'images/image/image.html',
                   {'section': 'images', 'image': image})
 

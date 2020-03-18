@@ -11,6 +11,12 @@
         {{ image.description|linebreaks }}
         {{ image.shooting }}
     </div>
-
+    {% if request.user.id == image.user_id %}
+        <h2>Delete image</h2>
+        <form action="{{ image.slug }}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete this image">
+        </form>
+    {% endif %}
 {% endblock %}
 
